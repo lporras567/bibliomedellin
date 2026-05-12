@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BiblioSmart · Biblioteca Municipal de Medellín</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- SIDEBAR NAV -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">📚</div>
+    <div>
+      <div class="brand-name">BiblioSmart</div>
+      <div class="brand-sub">SENA · ADSO 228118</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-label">Módulos PostgreSQL</div>
+    <a href="#modulo1" class="nav-item active" data-module="1">
+      <span class="nav-num">01</span>
+      <span class="nav-text">Infraestructura y Seguridad</span>
+    </a>
+    <a href="#modulo2" class="nav-item" data-module="2">
+      <span class="nav-num">02</span>
+      <span class="nav-text">Modelado Físico</span>
+    </a>
+    <a href="#modulo3" class="nav-item" data-module="3">
+      <span class="nav-num">03</span>
+      <span class="nav-text">JOINs y Relaciones</span>
+    </a>
+    <a href="#modulo4" class="nav-item" data-module="4">
+      <span class="nav-num">04</span>
+      <span class="nav-text">Vistas y Procedimientos</span>
+    </a>
+    <a href="#modulo5" class="nav-item" data-module="5">
+      <span class="nav-num">05</span>
+      <span class="nav-text">Triggers y Automatización</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="progress-label">Progreso del curso</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progressBar" style="width:20%"></div>
+    </div>
+    <div class="progress-text" id="progressText">Módulo 1 de 5</div>
+  </div>
+</aside>
+
+<!-- HAMBURGER -->
+<button class="hamburger" id="hamburger" aria-label="Menú">
+  <span></span><span></span><span></span>
+</button>
+<div class="overlay" id="overlay"></div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">Biblioteca Municipal de Medellín</div>
+    <h1 class="hero-title">Guía Completa<br><em>PostgreSQL</em></h1>
+    <p class="hero-desc">Del rol de administrador hasta la automatización con triggers. Cinco módulos progresivos para dominar el motor de base de datos más robusto del ecosistema open source.</p>
+    <div class="hero-chips">
+      <span class="chip">5 Módulos</span>
+      <span class="chip">DDL · DML · PL/pgSQL</span>
+      <span class="chip">Proyecto BiblioSmart</span>
+    </div>
+    <div class="er-diagram-box">
+      <div class="er-title">Modelo Entidad-Relación · BiblioSmart</div>
+      <div class="er-diagram">
+        <div class="er-entities">
+          <!-- SEDES -->
+          <div class="er-entity" style="grid-area:sedes">
+            <div class="er-entity-name">sedes</div>
+            <div class="er-attr pk">🔑 sede_id SERIAL</div>
+            <div class="er-attr">nombre_sede VARCHAR(100)</div>
+            <div class="er-attr">direccion TEXT</div>
+          </div>
+          <!-- LIBROS -->
+          <div class="er-entity" style="grid-area:libros">
+            <div class="er-entity-name">libros</div>
+            <div class="er-attr pk">🔑 isbn VARCHAR(20)</div>
+            <div class="er-attr">titulo VARCHAR(200)</div>
+            <div class="er-attr">anio_publicacion INTEGER</div>
+            <div class="er-attr">genero VARCHAR(50)</div>
+          </div>
+          <!-- AUTORES -->
+          <div class="er-entity" style="grid-area:autores">
+            <div class="er-entity-name">autores</div>
+            <div class="er-attr pk">🔑 autor_id SERIAL</div>
+            <div class="er-attr">nombre VARCHAR(100)</div>
+            <div class="er-attr">nacionalidad VARCHAR(50)</div>
+          </div>
+          <!-- LIBRO_AUTOR -->
+          <div class="er-entity er-intermediate" style="grid-area:libroautor">
+            <div class="er-entity-name">libro_autor</div>
+            <div class="er-attr fk">🔗 isbn (FK)</div>
+            <div class="er-attr fk">🔗 autor_id (FK)</div>
+            <div class="er-attr pk-comp">PK compuesta</div>
+          </div>
+          <!-- EJEMPLARES -->
+          <div class="er-entity" style="grid-area:ejemplares">
+            <div class="er-entity-name">ejemplares</div>
+            <div class="er-attr pk">🔑 ejemplar_id SERIAL</div>
+            <div class="er-attr fk">🔗 isbn (FK)</div>
+            <div class="er-attr fk">🔗 sede_id (FK)</div>
+            <div class="er-attr">ubicacion_estanteria</div>
+            <div class="er-attr">estado ENUM</div>
+          </div>
+          <!-- USUARIOS -->
+          <div class="er-entity" style="grid-area:usuarios">
+            <div class="er-entity-name">usuarios</div>
+            <div class="er-attr pk">🔑 usuario_id SERIAL</div>
+            <div class="er-attr">nombre_completo VARCHAR</div>
+            <div class="er-attr">tipo ENUM</div>
+          </div>
+          <!-- PRESTAMOS -->
+          <div class="er-entity" style="grid-area:prestamos">
+            <div class="er-entity-name">prestamos</div>
+            <div class="er-attr pk">🔑 prestamo_id SERIAL</div>
+            <div class="er-attr fk">🔗 ejemplar_id (FK)</div>
+            <div class="er-attr fk">🔗 usuario_id (FK)</div>
+            <div class="er-attr">fecha_inicio DATE</div>
+            <div class="er-attr">fecha_limite DATE</div>
+            <div class="er-attr">estado ENUM</div>
+          </div>
+        </div>
+        <div class="er-legend">
+          <span><span class="leg-dot pk-dot"></span>PK · Llave Primaria</span>
+          <span><span class="leg-dot fk-dot"></span>FK · Llave Foránea</span>
+          <span><span class="leg-dot int-dot"></span>Tabla intermedia N:M</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÓDULO 1 -->
+  <section class="module" id="modulo1">
+    <div class="module-header">
+      <div class="module-num">01</div>
+      <div>
+        <h2 class="module-title">Infraestructura y Seguridad</h2>
+        <p class="module-subtitle">Roles, bases de datos y principio de mínimo privilegio</p>
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h3>Fundamentación Teórica</h3>
+      <div class="theory-grid">
+        <div class="theory-card">
+          <div class="tc-icon">🔐</div>
+          <div class="tc-title">Roles en PostgreSQL</div>
+          <p>Un rol es una entidad que puede actuar como usuario (si tiene LOGIN) o como grupo. La gestión de roles permite separar responsabilidades entre proyectos.</p>
+        </div>
+        <div class="theory-card">
+          <div class="tc-icon">🛡️</div>
+          <div class="tc-title">Principio de Mínimo Privilegio</div>
+          <p>El superusuario postgres nunca debe usarse en desarrollo. Se crea un administrador específico del proyecto con privilegios limitados y controlados.</p>
+        </div>
+        <div class="theory-card">
+          <div class="tc-icon">👑</div>
+          <div class="tc-title">OWNER de la BD</div>
+          <p>El propietario (OWNER) tiene control total sobre su base de datos, garantizando que solo procesos autorizados realicen cambios estructurales.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps-container">
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">A</span>
+          <span class="step-title">Acceso inicial como superusuario</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>psql -U postgres</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">B</span>
+          <span class="step-title">Crear el Rol Administrador</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- Creamos el rol con permiso de inicio de sesión y contraseña cifrada
+CREATE ROLE admin_biblioteca WITH
+    LOGIN
+    PASSWORD 'Medellin2026*'
+    CREATEDB
+    CREATEROLE;
+
+COMMENT ON ROLE admin_biblioteca IS
+    'Administrador principal de la DB Biblioteca Municipal';</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">C</span>
+          <span class="step-title">Crear la Base de Datos</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- Creamos la BD asignando el propietario desde la creación
+CREATE DATABASE biblioteca_medellin
+    OWNER    admin_biblioteca
+    ENCODING 'UTF8';
+
+-- Conectarse a la nueva base de datos
+\c biblioteca_medellin
+
+-- Otorgar privilegios totales sobre el esquema público
+GRANT ALL PRIVILEGES ON SCHEMA public TO admin_biblioteca;</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">D</span>
+          <span class="step-title">Validación: Prueba de Conexión</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>psql -U admin_biblioteca -d biblioteca_medellin
+-- Contraseña: Medellin2026*</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-box">
+      <h3>💡 Tips para la Clase</h3>
+      <div class="tips-list">
+        <div class="tip"><strong>CREATEDB vs SUPERUSER:</strong> Un SUPERUSER puede borrarlo todo; un usuario con CREATEDB solo gestiona las bases de datos que él mismo cree.</div>
+        <div class="tip"><strong>pg_hba.conf:</strong> Si aparece "Peer authentication failed", PostgreSQL controla accesos según este archivo de configuración.</div>
+        <div class="tip"><strong>Naming Convention:</strong> Siempre usar nombres en minúsculas con guiones bajos (_) para evitar problemas con comillas dobles en PostgreSQL.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÓDULO 2 -->
+  <section class="module" id="modulo2">
+    <div class="module-header">
+      <div class="module-num">02</div>
+      <div>
+        <h2 class="module-title">Modelado Físico</h2>
+        <p class="module-subtitle">Tablas, tipos ENUM, integridad referencial e índices</p>
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h3>Fundamentación Teórica</h3>
+      <div class="theory-grid">
+        <div class="theory-card">
+          <div class="tc-icon">🔗</div>
+          <div class="tc-title">Integridad Referencial</div>
+          <p>PRIMARY KEY identifica registros únicos. FOREIGN KEY conecta tablas garantizando que no existan registros huérfanos.</p>
+        </div>
+        <div class="theory-card">
+          <div class="tc-icon">↔️</div>
+          <div class="tc-title">Relaciones N:M</div>
+          <p>Un libro puede tener varios autores y viceversa. Se resuelve con una tabla intermedia (libro_autor) con PK compuesta.</p>
+        </div>
+        <div class="theory-card">
+          <div class="tc-icon">⚡</div>
+          <div class="tc-title">Índices</div>
+          <p>Evitan que PostgreSQL lea toda la tabla (Seq Scan). Aceleran búsquedas en columnas de cláusulas WHERE y JOIN frecuentes.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps-container">
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">A</span>
+          <span class="step-title">Conectarse como admin_biblioteca</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>\c biblioteca_medellin admin_biblioteca</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">B</span>
+          <span class="step-title">Crear Tablas Principales</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- 1. Tabla de Autores
+CREATE TABLE autores (
+    autor_id   SERIAL PRIMARY KEY,
+    nombre     VARCHAR(100) NOT NULL,
+    nacionalidad VARCHAR(50)
+);
+
+-- 2. Tabla de Libros (ISBN como PK natural)
+CREATE TABLE libros (
+    isbn              VARCHAR(20) PRIMARY KEY,
+    titulo            VARCHAR(200) NOT NULL,
+    anio_publicacion  INTEGER,
+    genero            VARCHAR(50)
+);
+
+-- 3. Tabla Intermedia: Libro_Autor (Relación N:M)
+CREATE TABLE libro_autor (
+    isbn     VARCHAR(20) REFERENCES libros(isbn)   ON DELETE CASCADE,
+    autor_id INTEGER     REFERENCES autores(autor_id) ON DELETE CASCADE,
+    PRIMARY KEY (isbn, autor_id)
+);
+
+-- 4. Tabla de Sedes
+CREATE TABLE sedes (
+    sede_id    SERIAL PRIMARY KEY,
+    nombre_sede VARCHAR(100) NOT NULL,
+    direccion   TEXT
+);</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">C</span>
+          <span class="step-title">Tipos ENUM y Tablas con FK</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- 5. Tipos enumerados (valores cerrados y controlados)
+CREATE TYPE estado_ejemplar AS ENUM
+    ('Excelente', 'Bueno', 'Deteriorado', 'En Reparación');
+
+CREATE TYPE estado_prestamo AS ENUM
+    ('Activo', 'Devuelto', 'Vencido');
+
+CREATE TYPE tipo_usuario AS ENUM
+    ('Estudiante', 'Docente', 'Publico Externo');
+
+-- 6. Tabla de Ejemplares (copia física de un libro en una sede)
+CREATE TABLE ejemplares (
+    ejemplar_id          SERIAL PRIMARY KEY,
+    isbn                 VARCHAR(20) REFERENCES libros(isbn),
+    sede_id              INTEGER     REFERENCES sedes(sede_id),
+    ubicacion_estanteria VARCHAR(50),
+    estado               estado_ejemplar DEFAULT 'Bueno'
+);
+
+-- 7. Tabla de Usuarios
+CREATE TABLE usuarios (
+    usuario_id     SERIAL PRIMARY KEY,
+    nombre_completo VARCHAR(150) NOT NULL,
+    tipo            tipo_usuario NOT NULL
+);
+
+-- 8. Tabla de Préstamos
+CREATE TABLE prestamos (
+    prestamo_id  SERIAL PRIMARY KEY,
+    ejemplar_id  INTEGER REFERENCES ejemplares(ejemplar_id),
+    usuario_id   INTEGER REFERENCES usuarios(usuario_id),
+    fecha_inicio DATE    DEFAULT CURRENT_DATE,
+    fecha_limite DATE    NOT NULL,
+    estado       estado_prestamo DEFAULT 'Activo'
+);</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">D</span>
+          <span class="step-title">Índices de Optimización</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- Búsqueda rápida por título (consulta más frecuente)
+CREATE INDEX idx_libro_titulo
+    ON libros(titulo);
+
+-- Búsqueda de usuarios por nombre (reportes)
+CREATE INDEX idx_usuario_nombre
+    ON usuarios(nombre_completo);
+
+-- Acelerar reportes de morosos y libros vencidos
+CREATE INDEX idx_prestamo_estado
+    ON prestamos(estado);</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-box">
+      <h3>📝 Ejercicio de Refuerzo</h3>
+      <div class="tips-list">
+        <div class="tip"><strong>¿Por qué PK compuesta en libro_autor?</strong> La combinación (isbn, autor_id) debe ser única: el mismo autor no puede estar asignado dos veces al mismo libro.</div>
+        <div class="tip"><strong>Prueba de FK:</strong> Intentar insertar un préstamo con ejemplar_id inexistente y observar cómo el motor rechaza la operación.</div>
+        <div class="tip"><strong>SERIAL vs ISBN:</strong> Se usa SERIAL para IDs sintéticos y VARCHAR para el ISBN porque ya es un identificador natural universal del libro.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÓDULO 3 -->
+  <section class="module" id="modulo3">
+    <div class="module-header">
+      <div class="module-num">03</div>
+      <div>
+        <h2 class="module-title">JOINs y Relaciones</h2>
+        <p class="module-subtitle">Combinar tablas para obtener información cruzada</p>
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h3>Tipos de JOIN</h3>
+      <div class="join-diagram">
+        <div class="join-card inner">
+          <div class="join-venn">
+            <div class="venn-left"></div>
+            <div class="venn-right"></div>
+            <div class="venn-overlap inner-fill"></div>
+          </div>
+          <div class="join-name">INNER JOIN</div>
+          <div class="join-desc">Solo registros con coincidencia en AMBAS tablas</div>
+        </div>
+        <div class="join-card left">
+          <div class="join-venn">
+            <div class="venn-left left-fill"></div>
+            <div class="venn-right"></div>
+            <div class="venn-overlap left-fill"></div>
+          </div>
+          <div class="join-name">LEFT JOIN</div>
+          <div class="join-desc">Todos los de la izquierda + coincidentes de la derecha (NULL si no hay)</div>
+        </div>
+        <div class="join-card full">
+          <div class="join-venn">
+            <div class="venn-left full-fill"></div>
+            <div class="venn-right full-fill"></div>
+            <div class="venn-overlap full-fill"></div>
+          </div>
+          <div class="join-name">FULL OUTER JOIN</div>
+          <div class="join-desc">Todos los registros de ambas tablas, coincidan o no</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps-container">
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">A</span>
+          <span class="step-title">Insertar Datos de Prueba</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- Sedes de la Biblioteca Municipal de Medellín
+INSERT INTO sedes (nombre_sede, direccion) VALUES
+    ('Belén',      'Carrera 76 # 18-19'),
+    ('La Playa',   'Calle 52 # 45-23'),
+    ('San Javier', 'Calle 42 # 99-10');
+
+-- Libros del catálogo
+INSERT INTO libros (isbn, titulo, anio_publicacion, genero) VALUES
+    ('978-1', 'Cien Años de Soledad',   1967, 'Realismo Mágico'),
+    ('978-2', 'Don Quijote de la Mancha', 1605, 'Novela'),
+    ('978-3', 'El código Da Vinci',     2003, 'Suspenso');
+
+-- Ejemplares: El código Da Vinci NO tiene ejemplar (para probar LEFT JOIN)
+INSERT INTO ejemplares (isbn, sede_id, ubicacion_estanteria, estado) VALUES
+    ('978-1', 1, 'A-12', 'Excelente'),
+    ('978-2', 1, 'B-05', 'Bueno');
+
+-- Usuarios con distintos tipos
+INSERT INTO usuarios (nombre_completo, tipo) VALUES
+    ('Luis Porras',    'Docente'),
+    ('Ana Martínez',   'Estudiante'),
+    ('Carlos Ruiz',    'Publico Externo');</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">B</span>
+          <span class="step-title">INNER JOIN — Libros con inventario físico</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- Solo libros que FÍSICAMENTE existen en alguna sede
+SELECT
+    l.titulo,
+    s.nombre_sede,
+    e.ubicacion_estanteria,
+    e.estado
+FROM libros l
+INNER JOIN ejemplares e ON l.isbn    = e.isbn
+INNER JOIN sedes      s ON e.sede_id = s.sede_id;
+-- Resultado: 2 filas (Cien Años y Don Quijote)
+-- El código Da Vinci NO aparece porque no tiene ejemplar</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">C</span>
+          <span class="step-title">LEFT JOIN — Identificar libros sin inventario</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- ¿Qué libros tenemos registrados pero sin ejemplar físico?
+SELECT
+    l.titulo,
+    e.ejemplar_id
+FROM libros l
+LEFT JOIN ejemplares e ON l.isbn = e.isbn
+WHERE e.ejemplar_id IS NULL;
+-- Resultado: "El código Da Vinci" con ejemplar_id = NULL</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">D</span>
+          <span class="step-title">FULL OUTER JOIN — Cruce total usuarios y préstamos</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- Ver quién ha prestado y quién no
+SELECT
+    u.nombre_completo,
+    p.prestamo_id,
+    p.estado
+FROM usuarios u
+FULL OUTER JOIN prestamos p ON u.usuario_id = p.usuario_id;</code></pre>
+        </div>
+      </div>
+
+      <div class="step challenge-step">
+        <div class="step-header">
+          <span class="step-letter">🏆</span>
+          <span class="step-title">Reto: JOIN de 4 Tablas</span>
+        </div>
+        <p class="challenge-desc">Enunciado: <em>"Mostrar el nombre del usuario, el título del libro que prestó y la sede de donde salió el libro"</em></p>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- Solución: navegar por el modelo completo
+SELECT
+    u.nombre_completo,
+    l.titulo,
+    s.nombre_sede
+FROM usuarios   u
+JOIN prestamos  p ON u.usuario_id  = p.usuario_id
+JOIN ejemplares e ON p.ejemplar_id = e.ejemplar_id
+JOIN libros     l ON e.isbn        = l.isbn
+JOIN sedes      s ON e.sede_id     = s.sede_id;</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-box">
+      <h3>📐 Tips Pedagógicos</h3>
+      <div class="tips-list">
+        <div class="tip"><strong>Diagramas de Venn:</strong> Úsalos para explicar los JOINs visualmente. La intersección = INNER, el círculo completo = LEFT/RIGHT.</div>
+        <div class="tip"><strong>Alias de tablas:</strong> Enseña a usar l, e, s desde el inicio para que el código sea legible y no ambiguo.</div>
+        <div class="tip"><strong>El peligro del Cross Join:</strong> Si se olvida la cláusula ON, PostgreSQL produce el producto cartesiano y puede congelar una BD grande.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÓDULO 4 -->
+  <section class="module" id="modulo4">
+    <div class="module-header">
+      <div class="module-num">04</div>
+      <div>
+        <h2 class="module-title">Vistas y Procedimientos</h2>
+        <p class="module-subtitle">Abstracción, lógica encapsulada y gestión de transacciones</p>
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h3>Comparativa: Función vs Procedimiento</h3>
+      <div class="compare-table">
+        <div class="compare-header">
+          <div>Característica</div>
+          <div>FUNCTION</div>
+          <div>PROCEDURE</div>
+        </div>
+        <div class="compare-row">
+          <div>Retorno</div>
+          <div class="tag-yes">Siempre retorna un valor</div>
+          <div class="tag-no">No retorna (usa INOUT)</div>
+        </div>
+        <div class="compare-row">
+          <div>Llamada</div>
+          <div class="tag-code">SELECT fn_()</div>
+          <div class="tag-code">CALL sp_()</div>
+        </div>
+        <div class="compare-row">
+          <div>Transacciones</div>
+          <div class="tag-no">No puede COMMIT/ROLLBACK</div>
+          <div class="tag-yes">Puede COMMIT y ROLLBACK</div>
+        </div>
+        <div class="compare-row">
+          <div>Uso común</div>
+          <div>Cálculos, filtros, validaciones</div>
+          <div>Procesos complejos, cargas masivas</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps-container">
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">A</span>
+          <span class="step-title">Vista: Reporte de Préstamos Críticos</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- Vista que centraliza JOINs complejos para el reportero
+CREATE VIEW vista_prestamos_criticos AS
+SELECT
+    u.nombre_completo        AS usuario,
+    l.titulo                 AS libro,
+    s.nombre_sede            AS sede,
+    p.fecha_limite,
+    (CURRENT_DATE - p.fecha_limite) AS dias_retraso
+FROM prestamos  p
+JOIN usuarios   u ON p.usuario_id  = u.usuario_id
+JOIN ejemplares e ON p.ejemplar_id = e.ejemplar_id
+JOIN libros     l ON e.isbn        = l.isbn
+JOIN sedes      s ON e.sede_id     = s.sede_id
+WHERE p.estado = 'Vencido'
+   OR (p.estado = 'Activo' AND p.fecha_limite < CURRENT_DATE);
+
+-- Uso: una sola línea en lugar de 4 JOINs
+SELECT * FROM vista_prestamos_criticos;</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">B</span>
+          <span class="step-title">Función: Stock disponible por ISBN</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>CREATE OR REPLACE FUNCTION fn_stock_disponible(p_isbn VARCHAR)
+RETURNS INTEGER AS $$
+DECLARE
+    v_conteo INTEGER;
+BEGIN
+    SELECT COUNT(*) INTO v_conteo
+    FROM ejemplares
+    WHERE isbn = p_isbn
+      AND estado IN ('Excelente', 'Bueno');
+
+    RETURN v_conteo;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Ejemplo de uso en una consulta
+SELECT titulo, fn_stock_disponible(isbn) AS unidades_aptas
+FROM libros;</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">C</span>
+          <span class="step-title">Procedimiento: Procesar Devolución</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>CREATE OR REPLACE PROCEDURE sp_procesar_devolucion(
+    p_prestamo_id        INTEGER,
+    p_nuevo_estado_fisico estado_ejemplar
+)
+AS $$
+BEGIN
+    -- 1. Marcar el préstamo como devuelto
+    UPDATE prestamos
+    SET estado = 'Devuelto'
+    WHERE prestamo_id = p_prestamo_id;
+
+    -- 2. Actualizar el estado físico del ejemplar vinculado
+    UPDATE ejemplares
+    SET estado = p_nuevo_estado_fisico
+    WHERE ejemplar_id = (
+        SELECT ejemplar_id FROM prestamos
+        WHERE prestamo_id = p_prestamo_id
+    );
+
+    RAISE NOTICE 'Devolución procesada y estado del ejemplar actualizado.';
+END;
+$$ LANGUAGE plpgsql;
+
+-- Ejemplo: devolver el préstamo 1, el libro volvió deteriorado
+CALL sp_procesar_devolucion(1, 'Deteriorado');</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-box">
+      <h3>💡 Tips de Instructor</h3>
+      <div class="tips-list">
+        <div class="tip"><strong>DECLARE:</strong> Explica el uso de variables locales dentro del bloque BEGIN...END. Son visibles solo dentro de la función o procedimiento.</div>
+        <div class="tip"><strong>Manejo de Errores:</strong> Los bloques EXCEPTION capturan errores y evitan fallos silenciosos cuando un ID no existe.</div>
+        <div class="tip"><strong>Seguridad:</strong> Los procedimientos almacenados previenen SQL Injection porque el usuario ejecuta el SP, no sentencias SQL directas.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÓDULO 5 -->
+  <section class="module" id="modulo5">
+    <div class="module-header">
+      <div class="module-num">05</div>
+      <div>
+        <h2 class="module-title">Triggers y Automatización</h2>
+        <p class="module-subtitle">Disparadores que garantizan integridad sin depender del frontend</p>
+      </div>
+    </div>
+
+    <div class="theory-box">
+      <h3>Anatomía de un Trigger</h3>
+      <div class="trigger-anatomy">
+        <div class="ta-item">
+          <div class="ta-label">Evento</div>
+          <div class="ta-tags">
+            <span class="ta-tag">INSERT</span>
+            <span class="ta-tag">UPDATE</span>
+            <span class="ta-tag">DELETE</span>
+            <span class="ta-tag">TRUNCATE</span>
+          </div>
+        </div>
+        <div class="ta-arrow">→</div>
+        <div class="ta-item">
+          <div class="ta-label">Momento</div>
+          <div class="ta-tags">
+            <span class="ta-tag ok">BEFORE</span>
+            <span class="ta-tag ok">AFTER</span>
+          </div>
+          <div class="ta-hint">BEFORE = validaciones<br>AFTER = auditoría/actualizar otras tablas</div>
+        </div>
+        <div class="ta-arrow">→</div>
+        <div class="ta-item">
+          <div class="ta-label">Granularidad</div>
+          <div class="ta-tags">
+            <span class="ta-tag">FOR EACH ROW</span>
+          </div>
+          <div class="ta-hint">Actúa sobre cada fila afectada. NEW = datos entrantes, OLD = datos anteriores</div>
+        </div>
+        <div class="ta-arrow">→</div>
+        <div class="ta-item">
+          <div class="ta-label">Función Trigger</div>
+          <div class="ta-tags">
+            <span class="ta-tag ok">RETURNS TRIGGER</span>
+          </div>
+          <div class="ta-hint">Se crea primero la función, luego se asocia al trigger</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps-container">
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">A</span>
+          <span class="step-title">Trigger: Gestión automática del estado del ejemplar</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- Paso 1: Crear la FUNCIÓN que ejecutará el trigger
+CREATE OR REPLACE FUNCTION fn_trg_gestionar_ejemplar()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Caso INSERT: se presta el libro → cambiar estado del ejemplar
+    IF (TG_OP = 'INSERT') THEN
+        UPDATE ejemplares
+        SET estado = 'Deteriorado'
+        WHERE ejemplar_id = NEW.ejemplar_id;
+        RAISE NOTICE 'Disparador: Estado del ejemplar actualizado por nuevo préstamo.';
+
+    -- Caso DELETE: se cancela el préstamo → liberar el ejemplar
+    ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE ejemplares
+        SET estado = 'Bueno'
+        WHERE ejemplar_id = OLD.ejemplar_id;
+        RAISE NOTICE 'Disparador: Ejemplar marcado como disponible.';
+    END IF;
+
+    RETURN NULL; -- En triggers AFTER el retorno no afecta la operación
+END;
+$$ LANGUAGE plpgsql;
+
+-- Paso 2: Crear el TRIGGER y asociarlo a la tabla prestamos
+CREATE TRIGGER trg_actualizar_ejemplar
+AFTER INSERT OR DELETE ON prestamos
+FOR EACH ROW
+EXECUTE FUNCTION fn_trg_gestionar_ejemplar();</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <span class="step-letter">B</span>
+          <span class="step-title">Trigger de Auditoría: Log de cambios de estado</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- 1. Tabla de log para registrar cada cambio de estado
+CREATE TABLE log_prestamos (
+    log_id          SERIAL PRIMARY KEY,
+    prestamo_id     INTEGER,
+    estado_anterior VARCHAR(20),
+    estado_nuevo    VARCHAR(20),
+    fecha_cambio    TIMESTAMP DEFAULT NOW(),
+    usuario_db      TEXT      DEFAULT CURRENT_USER
+);
+
+-- 2. Función de auditoría
+CREATE OR REPLACE FUNCTION fn_trg_auditoria_prestamos()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Solo registrar si el estado cambió
+    IF (OLD.estado <> NEW.estado) THEN
+        INSERT INTO log_prestamos (prestamo_id, estado_anterior, estado_nuevo)
+        VALUES (OLD.prestamo_id, OLD.estado::text, NEW.estado::text);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 3. Trigger AFTER UPDATE sobre la tabla prestamos
+CREATE TRIGGER trg_auditar_cambios
+AFTER UPDATE ON prestamos
+FOR EACH ROW
+EXECUTE FUNCTION fn_trg_auditoria_prestamos();</code></pre>
+        </div>
+      </div>
+
+      <div class="step challenge-step">
+        <div class="step-header">
+          <span class="step-letter">🧪</span>
+          <span class="step-title">Pruebas para la Clase</span>
+        </div>
+        <div class="code-block">
+          <div class="code-toolbar">
+            <span class="code-lang">sql</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+          </div>
+          <pre><code>-- PRUEBA 1: Inserción → el ejemplar 1 debería cambiar estado automáticamente
+INSERT INTO prestamos (ejemplar_id, usuario_id, fecha_limite)
+VALUES (1, 1, '2026-06-01');
+
+-- Verificar el efecto del trigger
+SELECT * FROM ejemplares WHERE ejemplar_id = 1;
+
+-- PRUEBA 2: Actualización → el trigger de auditoría guarda el cambio
+UPDATE prestamos SET estado = 'Vencido' WHERE prestamo_id = 1;
+
+-- Verificar que el log capturó el cambio
+SELECT * FROM log_prestamos;</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-box">
+      <h3>⚠️ Tips de Instructor SENA</h3>
+      <div class="tips-list">
+        <div class="tip"><strong>Recursividad:</strong> Advierte sobre el peligro de crear un trigger que actualice la misma tabla que lo disparó (bucle infinito).</div>
+        <div class="tip"><strong>NEW y OLD:</strong> NEW contiene los datos entrantes (INSERT/UPDATE); OLD contiene los datos previos (UPDATE/DELETE).</div>
+        <div class="tip"><strong>Rendimiento:</strong> Muchos triggers pueden volver lenta una base de datos. Usarlos solo para lógica crítica de integridad.</div>
+      </div>
+    </div>
+
+    <!-- SCRIPT COMPLETO CONSOLIDADO -->
+    <div class="final-script">
+      <div class="fs-header">
+        <div>
+          <div class="fs-title">📦 Script SQL Consolidado</div>
+          <div class="fs-subtitle">Todo el sistema BiblioSmart en un solo archivo listo para ejecutar</div>
+        </div>
+        <button class="copy-btn-big" onclick="copyFullScript()">Copiar todo el script</button>
+      </div>
+      <div class="code-block" id="fullScriptBlock">
+        <div class="code-toolbar">
+          <span class="code-lang">sql · script completo</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <pre><code id="fullScript">-- ============================================================
+-- SISTEMA BIBLIOMEDELLIN · SCRIPT COMPLETO
+-- Biblioteca Municipal de Medellín · SENA ADSO 228118
+-- ============================================================
+
+-- == FASE 1: SEGURIDAD Y DBA (ejecutar como postgres) ========
+CREATE ROLE admin_biblioteca WITH
+    LOGIN PASSWORD 'Medellin2026*' CREATEDB CREATEROLE;
+
+CREATE DATABASE biblioteca_medellin
+    OWNER admin_biblioteca ENCODING 'UTF8';
+
+\c biblioteca_medellin
+GRANT ALL PRIVILEGES ON SCHEMA public TO admin_biblioteca;
+
+-- == FASE 2: DDL (ejecutar como admin_biblioteca) =============
+\c biblioteca_medellin admin_biblioteca
+
+CREATE TABLE autores (
+    autor_id     SERIAL PRIMARY KEY,
+    nombre       VARCHAR(100) NOT NULL,
+    nacionalidad VARCHAR(50)
+);
+
+CREATE TABLE libros (
+    isbn             VARCHAR(20) PRIMARY KEY,
+    titulo           VARCHAR(200) NOT NULL,
+    anio_publicacion INTEGER,
+    genero           VARCHAR(50)
+);
+
+CREATE TABLE libro_autor (
+    isbn     VARCHAR(20) REFERENCES libros(isbn)    ON DELETE CASCADE,
+    autor_id INTEGER     REFERENCES autores(autor_id) ON DELETE CASCADE,
+    PRIMARY KEY (isbn, autor_id)
+);
+
+CREATE TABLE sedes (
+    sede_id     SERIAL PRIMARY KEY,
+    nombre_sede VARCHAR(100) NOT NULL,
+    direccion   TEXT
+);
+
+CREATE TYPE estado_ejemplar AS ENUM
+    ('Excelente','Bueno','Deteriorado','En Reparación');
+CREATE TYPE estado_prestamo AS ENUM ('Activo','Devuelto','Vencido');
+CREATE TYPE tipo_usuario    AS ENUM ('Estudiante','Docente','Publico Externo');
+
+CREATE TABLE ejemplares (
+    ejemplar_id          SERIAL PRIMARY KEY,
+    isbn                 VARCHAR(20) REFERENCES libros(isbn),
+    sede_id              INTEGER     REFERENCES sedes(sede_id),
+    ubicacion_estanteria VARCHAR(50),
+    estado               estado_ejemplar DEFAULT 'Bueno'
+);
+
+CREATE TABLE usuarios (
+    usuario_id      SERIAL PRIMARY KEY,
+    nombre_completo VARCHAR(150) NOT NULL,
+    tipo            tipo_usuario NOT NULL
+);
+
+CREATE TABLE prestamos (
+    prestamo_id  SERIAL PRIMARY KEY,
+    ejemplar_id  INTEGER REFERENCES ejemplares(ejemplar_id),
+    usuario_id   INTEGER REFERENCES usuarios(usuario_id),
+    fecha_inicio DATE    DEFAULT CURRENT_DATE,
+    fecha_limite DATE    NOT NULL,
+    estado       estado_prestamo DEFAULT 'Activo'
+);
+
+-- == FASE 3: ÍNDICES ==========================================
+CREATE INDEX idx_libro_titulo    ON libros(titulo);
+CREATE INDEX idx_usuario_nombre  ON usuarios(nombre_completo);
+CREATE INDEX idx_prestamo_estado ON prestamos(estado);
+
+-- == DATOS DE PRUEBA ==========================================
+INSERT INTO sedes (nombre_sede, direccion) VALUES
+    ('Belén',      'Carrera 76 # 18-19'),
+    ('La Playa',   'Calle 52 # 45-23'),
+    ('San Javier', 'Calle 42 # 99-10');
+
+INSERT INTO libros (isbn, titulo, anio_publicacion, genero) VALUES
+    ('978-1','Cien Años de Soledad',    1967,'Realismo Mágico'),
+    ('978-2','Don Quijote de la Mancha',1605,'Novela'),
+    ('978-3','El código Da Vinci',      2003,'Suspenso');
+
+INSERT INTO ejemplares (isbn, sede_id, ubicacion_estanteria, estado) VALUES
+    ('978-1',1,'A-12','Excelente'),
+    ('978-2',1,'B-05','Bueno');
+
+INSERT INTO usuarios (nombre_completo, tipo) VALUES
+    ('Luis Porras',  'Docente'),
+    ('Ana Martínez', 'Estudiante'),
+    ('Carlos Ruiz',  'Publico Externo');
+
+-- == VISTA ====================================================
+CREATE VIEW vista_prestamos_criticos AS
+SELECT u.nombre_completo AS usuario, l.titulo AS libro,
+       s.nombre_sede AS sede, p.fecha_limite,
+       (CURRENT_DATE - p.fecha_limite) AS dias_retraso
+FROM prestamos p
+JOIN usuarios   u ON p.usuario_id  = u.usuario_id
+JOIN ejemplares e ON p.ejemplar_id = e.ejemplar_id
+JOIN libros     l ON e.isbn        = l.isbn
+JOIN sedes      s ON e.sede_id     = s.sede_id
+WHERE p.estado = 'Vencido'
+   OR (p.estado = 'Activo' AND p.fecha_limite < CURRENT_DATE);
+
+-- == FUNCIÓN ==================================================
+CREATE OR REPLACE FUNCTION fn_stock_disponible(p_isbn VARCHAR)
+RETURNS INTEGER AS $$
+DECLARE v_conteo INTEGER;
+BEGIN
+    SELECT COUNT(*) INTO v_conteo FROM ejemplares
+    WHERE isbn = p_isbn AND estado IN ('Excelente','Bueno');
+    RETURN v_conteo;
+END;
+$$ LANGUAGE plpgsql;
+
+-- == PROCEDIMIENTO ============================================
+CREATE OR REPLACE PROCEDURE sp_procesar_devolucion(
+    p_prestamo_id INTEGER, p_nuevo_estado_fisico estado_ejemplar)
+AS $$
+BEGIN
+    UPDATE prestamos SET estado = 'Devuelto'
+    WHERE prestamo_id = p_prestamo_id;
+    UPDATE ejemplares SET estado = p_nuevo_estado_fisico
+    WHERE ejemplar_id = (SELECT ejemplar_id FROM prestamos
+                         WHERE prestamo_id = p_prestamo_id);
+    RAISE NOTICE 'Devolución procesada.';
+END;
+$$ LANGUAGE plpgsql;
+
+-- == TRIGGERS =================================================
+CREATE OR REPLACE FUNCTION fn_trg_gestionar_ejemplar()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF (TG_OP = 'INSERT') THEN
+        UPDATE ejemplares SET estado = 'Deteriorado'
+        WHERE ejemplar_id = NEW.ejemplar_id;
+    ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE ejemplares SET estado = 'Bueno'
+        WHERE ejemplar_id = OLD.ejemplar_id;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_actualizar_ejemplar
+AFTER INSERT OR DELETE ON prestamos
+FOR EACH ROW EXECUTE FUNCTION fn_trg_gestionar_ejemplar();
+
+CREATE TABLE log_prestamos (
+    log_id SERIAL PRIMARY KEY, prestamo_id INTEGER,
+    estado_anterior VARCHAR(20), estado_nuevo VARCHAR(20),
+    fecha_cambio TIMESTAMP DEFAULT NOW(), usuario_db TEXT DEFAULT CURRENT_USER
+);
+
+CREATE OR REPLACE FUNCTION fn_trg_auditoria_prestamos()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF (OLD.estado <> NEW.estado) THEN
+        INSERT INTO log_prestamos (prestamo_id, estado_anterior, estado_nuevo)
+        VALUES (OLD.prestamo_id, OLD.estado::text, NEW.estado::text);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_auditar_cambios
+AFTER UPDATE ON prestamos
+FOR EACH ROW EXECUTE FUNCTION fn_trg_auditoria_prestamos();</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div>
+        <div class="footer-brand">BiblioSmart · Biblioteca Municipal de Medellín</div>
+        <div class="footer-sub">SENA · Centro del Diseño y Manufactura del Cuero · ADSO 228118</div>
+      </div>
+      <div class="footer-tags">
+        <span>PostgreSQL 16</span>
+        <span>PL/pgSQL</span>
+        <span>DDL · DML · Triggers</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
