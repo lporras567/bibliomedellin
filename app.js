@@ -86,7 +86,36 @@ function copyCode(btn) {
   });
 }
 
-// ── COPY FULL SCRIPT ────────────────────────────────────────
+// ── AÑO DINÁMICO ────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const yr = new Date().getFullYear();
+  document.querySelectorAll('#copy-year, #footer-year, .cy').forEach(el => {
+    el.textContent = yr;
+  });
+});
+
+// ── COPIAR CITACIÓN ─────────────────────────────────────────
+function copyCitation() {
+  const el   = document.getElementById('citationText');
+  const text = el.innerText || el.textContent;
+  const btn  = document.querySelector('.citation-copy-btn');
+
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Citación copiada';
+    setTimeout(() => { btn.textContent = 'Copiar citación'; }, 2500);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ Citación copiada';
+    setTimeout(() => { btn.textContent = 'Copiar citación'; }, 2500);
+  });
+}
 function copyFullScript() {
   const el   = document.getElementById('fullScript');
   const text = el.innerText || el.textContent;
